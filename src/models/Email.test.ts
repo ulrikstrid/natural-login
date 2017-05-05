@@ -1,10 +1,29 @@
 import * as Email from './Email'
 
 test('emailRegex matches valid emails', () => {
-  const matchedEmails = Email.standardEmailDomains
+  const emails = Email.standardEmailDomains
     .map((domain) => `ulrik.strid@${domain}`)
+
+  const matchedEmails = emails
     .map((validEmail) => Email.emailRegex.test(validEmail))
 
+  const emailMatches = emails
+    .map((validEmail) => validEmail.match(Email.emailRegex))
+    .filter((matchOrNull) => matchOrNull !== null)
+    // flatten the array
+    .reduce((acc: string[], curr) => {
+      if (curr === null) return acc
+      return [
+        ...acc,
+        ...curr
+      ]
+    }, [])
+
+  // the flattened array should contain all the domain names
+  expect(emailMatches).toEqual(expect.arrayContaining(Email.standardEmailDomains))
+  // the third element in the array should be the first domain name
+  expect(emailMatches[2]).toBe(Email.standardEmailDomains[0])
+  // all the emails should be OK
   expect(matchedEmails).toEqual(expect.arrayContaining([true, true, true, true, true]))
 })
 

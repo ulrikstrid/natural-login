@@ -5,7 +5,8 @@ export type HelpMessage = {
   valid: boolean
 }
 
-export const emailRegex = /[a-z\.]+@[a-z]+\.(com|se)/
+// Naive regex to validate emails, it doesn't support a lot of stuff that it should
+export const emailRegex = /([a-z\.]+)@([a-z\.]+\.(com|se))/
 
 export function validateEmail (email: string): boolean {
   return emailRegex.test(email)
