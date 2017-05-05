@@ -7,11 +7,8 @@ export type HelpMessage = {
 
 export const emailRegex = /[a-z\.]+@[a-z]+\.(com|se)/
 
-export function validateEmail (email: string): { input: Email, valid: boolean } {
-  return {
-    input: email,
-    valid: emailRegex.test(email)
-  }
+export function validateEmail (email: string): boolean {
+  return emailRegex.test(email)
 }
 
 export const standardEmailDomains = [

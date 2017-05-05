@@ -17,8 +17,8 @@ test('emailRegex gives false for invalid emails', () => {
 })
 
 test('validate email', () => {
-  expect(Email.validateEmail('ulrik.strid@outlook.com')).toEqual({ input: 'ulrik.strid@outlook.com', valid: true })
-  expect(Email.validateEmail('ulrik.stridoutlook.com')).toEqual({ input: 'ulrik.stridoutlook.com', valid: false })
+  expect(Email.validateEmail('ulrik.strid@outlook.com')).toBe(true)
+  expect(Email.validateEmail('ulrik.stridoutlook.com')).toBe(false)
 })
 
 test('string diff', () => {
