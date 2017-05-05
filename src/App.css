@@ -1,22 +1,79 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+body {
+  background: #ecf0f1;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+/* Remove chromes yellow background on autofill */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
 
-.App-intro {
-  font-size: large;
+.login-container {
+  width: 350px;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  padding: 30px;
+  background: #3498db;
+  box-shadow: 3px 3px 3px 3px #2c3e50;
+  border-radius: 3px;
 }
+
+.form {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+  .form .button {
+    margin-top: 15px;
+    height: 40px;
+    width: 100%;
+    border: 1px solid #FBFBFB;
+    border-radius: 5px;
+    background: #9b59b6;
+    font-size: 18px;
+  }
+
+.form-group {
+  width: 100%;
+  height: 85px;
+  margin-bottom: 15px;
+  margin-right: 0;
+}
+
+  .form-group label {
+    display: block;
+    width: 100%;
+    height: 25px;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+
+  .form-group input {
+    width: 100%;
+    height: 30px;
+    font-size: 17px;
+    padding-left: 5px;
+    border: 0;
+  }
+
+  .form-group .validation {
+    display: none;
+    height: 25px;
+    padding: 5px;
+    background: #c0392b;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  .form-group .validation.invalid {
+    display: block;
+  }
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

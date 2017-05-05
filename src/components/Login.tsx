@@ -1,42 +1,66 @@
 import * as React from 'react'
+import * as classNames from 'classnames'
+import * as Email from '../models/Email'
+import InputWithValidation from './InputWithValidation'
 
-interface Props {
-
-}
+interface Props {}
 
 interface State {
   username: string,
+  validEmail: boolean,
   password: string
 }
 
 class Login extends React.Component<Props, State> {
   state = {
     username: '',
-    password: ''
+    password: '',
+    validEmail: true
   }
 
   loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
   }
 
-  setUsername = (e: React.FormEvent<HTMLInputElement>) => {
-    this.setState({ username: e.currentTarget.value })
+  setUsername = (inputValue: string) => {
+    this.setState({ username: inputValue })
   }
 
   setPassword = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({ password: e.currentTarget.value })
   }
 
+  setValidEmail = (input: string): boolean => {
+    const isValid = Email.validateEmail(input)
+    this.setState({ validEmail: isValid })
+    return isValid
+  }
+
   render () {
     return (
-      <form onSubmit={this.loginSubmit}>
-        <label htmlFor='username'>Username</label>
-        <input type='string' name='username' value={this.state.username} onChange={this.setUsername} />
-        <label htmlFor='password'>Password</label>
-        <input type='password' name='password' value={this.state.password} onChange={this.setPassword} />
+      <div className='login-container'>
+        <form className='form' onSubmit={this.loginSubmit}>
+          <div className='form-group'>
+            <label htmlFor='username'>Username</label>
+            <InputWithValidation
+              type='email'
+              name='username'
+              value={this.state.username}
+              updateValue={this.setUsername}
+              validator={this.setValidEmail}
+            />
+            <div className={classNames({ validation: true, invalid: !this.state.validEmail })}>
+              Not a valid E-mail
+            </div>
+          </div>
+          <div className='form-group'>
+            <label htmlFor='password'>Password</label>
+            <input type='password' name='password' value={this.state.password} onChange={this.setPassword} />
+          </div>
 
-        <input type='submit' />
-      </form>
+          <input type='submit' className='button' />
+        </form>
+      </div>
     )
   }
 }
