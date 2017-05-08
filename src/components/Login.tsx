@@ -1,19 +1,18 @@
 import * as React from 'react'
 import * as classNames from 'classnames'
 import * as Email from '../models/Email'
-import InputWithValidation from './InputWithValidation'
 
 interface Props {}
 
 interface State {
-  username: string,
+  email: string,
   validEmail: boolean,
   password: string
 }
 
 class Login extends React.Component<Props, State> {
   state = {
-    username: '',
+    email: '',
     password: '',
     validEmail: true
   }
@@ -22,18 +21,33 @@ class Login extends React.Component<Props, State> {
     e.preventDefault()
   }
 
-  setUsername = (inputValue: string) => {
-    this.setState({ username: inputValue })
+  setEmail = (e: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ email: e.currentTarget.value })
   }
 
   setPassword = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({ password: e.currentTarget.value })
   }
 
-  setValidEmail = (input: string): boolean => {
-    const isValid = Email.validateEmail(input)
-    this.setState({ validEmail: isValid })
-    return isValid
+  componentWillUpdate (_: Props, nextState: State) {
+    // a empty email should not show a error message
+    if (this.state.email !== nextState.email && nextState.email.length === 0) {
+      this.setState({
+        validEmail: true
+      })
+    }
+    // if the user is typing its password and has added a email we should validate the email
+    if (nextState.password !== this.state.password && nextState.email.length !== 0) {
+      this.setState({
+        validEmail: Email.validateEmail(nextState.email)
+      })
+    }
+    // if the email is invalid we should validate it when it changes
+    if (this.state.validEmail === false && this.state.email !== nextState.email) {
+      this.setState({
+        validEmail: Email.validateEmail(nextState.email)
+      })
+    }
   }
 
   render () {
@@ -41,13 +55,13 @@ class Login extends React.Component<Props, State> {
       <div className='login-container'>
         <form className='form' onSubmit={this.loginSubmit}>
           <div className='form-group'>
-            <label htmlFor='username'>Username</label>
-            <InputWithValidation
+            <label htmlFor='email'>Email</label>
+            <input
+              autoComplete='off'
               type='email'
-              name='username'
-              value={this.state.username}
-              updateValue={this.setUsername}
-              validator={this.setValidEmail}
+              name='email'
+              value={this.state.email}
+              onChange={this.setEmail}
             />
             <div className={classNames({ validation: true, invalid: !this.state.validEmail })}>
               Not a valid E-mail
@@ -55,7 +69,13 @@ class Login extends React.Component<Props, State> {
           </div>
           <div className='form-group'>
             <label htmlFor='password'>Password</label>
-            <input type='password' name='password' value={this.state.password} onChange={this.setPassword} />
+            <input
+              autoComplete='off'
+              type='password'
+              name='password'
+              value={this.state.password}
+              onChange={this.setPassword}
+            />
           </div>
 
           <input type='submit' className='button' />
