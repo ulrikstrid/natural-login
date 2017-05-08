@@ -2,23 +2,39 @@ import * as React from 'react'
 import * as classNames from 'classnames'
 import * as Email from '../models/Email'
 
+import './Login.css'
+
 interface Props {}
 
 interface State {
   email: string,
+  password: string,
   validEmail: boolean,
-  password: string
+  popOver: boolean,
+  suggestedEmail: string
 }
 
 class Login extends React.Component<Props, State> {
   state = {
     email: '',
     password: '',
-    validEmail: true
+    validEmail: true,
+    popOver: false,
+    suggestedEmail: ''
   }
+
+  loginInput: HTMLInputElement
 
   loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const emailMatch = this.loginInput.value.match(Email.emailRegex)
+
+    if (emailMatch !== null) {
+      const username = emailMatch[1]
+      const domainName = emailMatch[2]
+      console.log(Email.bestMatch(Email.standardEmailDomains, domainName), username, '@', domainName)
+    }
   }
 
   setEmail = (e: React.FormEvent<HTMLInputElement>) => {
@@ -50,13 +66,16 @@ class Login extends React.Component<Props, State> {
     }
   }
 
+  assignEmailRef = (ele: HTMLInputElement) => this.loginInput = ele
+
   render () {
     return (
       <div className='login-container'>
-        <form className='form' onSubmit={this.loginSubmit}>
+        <form className={classNames({ form: true, hidden: this.state.popOver })} onSubmit={this.loginSubmit}>
           <div className='form-group'>
             <label htmlFor='email'>Email</label>
             <input
+              ref={this.assignEmailRef}
               autoComplete='off'
               type='email'
               name='email'
@@ -80,7 +99,12 @@ class Login extends React.Component<Props, State> {
 
           <input type='submit' className='button' />
         </form>
-      </div>
+        <div className={classNames({ popover: true, show: this.state.popOver })}>
+          <p>You wrote {this.state.email} but we think you ment {this.state.suggestedEmail}.</p>
+          <p>If this is correct, press "Yes" else press "No"" and we will submit your entered email</p>
+          <button>Yes</button>{' '}<button>No</button>
+        </div>
+      </div >
     )
   }
 }

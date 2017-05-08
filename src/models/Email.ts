@@ -17,7 +17,8 @@ export const standardEmailDomains = [
   'outlook.com',
   'hotmail.com',
   'live.com',
-  'telia.se'
+  'telia.se',
+  'example.com'
 ]
 
 export function stringDiff (stringA: string, stringB: string): number {
