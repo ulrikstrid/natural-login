@@ -27,6 +27,16 @@ test('emailRegex matches valid emails', () => {
   expect(matchedEmails).toEqual(expect.arrayContaining([true, true, true, true, true]))
 })
 
+test('our selectors gives us correct data', () => {
+  const matchArr = 'ulrik@example.com'.match(Email.emailRegex)
+  expect(matchArr).not.toBeNull()
+
+  if (matchArr !== null) {
+    expect(Email.getMatchingUsername(matchArr)).toBe('ulrik')
+    expect(Email.getMatchingDomain(matchArr)).toBe('example.com')
+  }
+})
+
 test('emailRegex gives false for invalid emails', () => {
   const unmatchedEmail = Email.standardEmailDomains
     .map((domain) => `ulrik.strid${domain}`)

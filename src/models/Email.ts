@@ -12,6 +12,15 @@ export function validateEmail (email: string): boolean {
   return emailRegex.test(email)
 }
 
+export function getMatchingUsername (matchArr: RegExpMatchArray) {
+  return matchArr[1]
+}
+
+export function getMatchingDomain (matchArr: RegExpMatchArray) {
+  return matchArr[2]
+}
+
+// This list should probably be dynamically fetched from the backend
 export const standardEmailDomains = [
   'gmail.com',
   'outlook.com',
@@ -21,6 +30,7 @@ export const standardEmailDomains = [
   'example.com'
 ]
 
+// Naive diffing of strings, we just compare characters at the same index
 export function stringDiff (stringA: string, stringB: string): number {
   return stringA.split('')
     .map((char, index) => {
@@ -29,6 +39,7 @@ export function stringDiff (stringA: string, stringB: string): number {
     .reduce((acc, curr) => acc + curr, 0)
 }
 
+// This function will only be as good as the stringDiff function
 export function bestMatch (list: string[], word: string): { word: string, bestMatch: string, diff: number } {
   const bestDiff = list
     .map((item) => {
