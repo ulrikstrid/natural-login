@@ -58,3 +58,13 @@ export function bestMatch (list: string[], word: string): { word: string, bestMa
 
   return { word, bestMatch: bestDiff.item, diff: bestDiff.diff }
 }
+
+export function findDomainInString (domainList: string[], input: string): null | string {
+  return domainList.reduce((match: null | string, curr): string | null => {
+    if (match !== null) {
+      return match
+    }
+
+    return new RegExp(curr).test(input) ? curr : null
+  }, null)
+}
