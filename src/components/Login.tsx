@@ -26,24 +26,45 @@ class Login extends React.Component<Props, State> {
   loginInput: HTMLInputElement
 
   loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
     const emailMatch = this.loginInput.value.match(Email.emailRegex)
 
     if (emailMatch !== null) {
-      const username = emailMatch[1]
-      const domainName = emailMatch[2]
-      console.log(Email.bestMatch(Email.standardEmailDomains, domainName), username, '@', domainName)
+      // The email is valid, but could still be a typo
+      const username = Email.getMatchingUsername(emailMatch)
+      const domainName = Email.getMatchingDomain(emailMatch)
+      const bestDomainMatch = Email.bestMatch(Email.standardEmailDomains, domainName)
+
+      if (bestDomainMatch.diff < 5) {
+        this.setState({
+          suggestedEmail: `${username}@${bestDomainMatch.bestMatch}`,
+          popOver: true
+        })
+      }
+
+      // The email is valid and the diff is too large to make sense of
+      // just let it submit the form.
+      return
     }
+
+    e.preventDefault()
   }
 
-  setEmail = (e: React.FormEvent<HTMLInputElement>) => {
+  setEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ email: e.currentTarget.value })
   }
 
-  setPassword = (e: React.FormEvent<HTMLInputElement>) => {
+  setPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: e.currentTarget.value })
   }
+
+  changeDomain = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+    this.setState((currentState) => ({
+      email: currentState.suggestedEmail
+    }))
+    // Submit form data for login here
+  }
+
+  assignEmailRef = (ele: HTMLInputElement) => this.loginInput = ele
 
   componentWillUpdate (_: Props, nextState: State) {
     // a empty email should not show a error message
@@ -65,8 +86,6 @@ class Login extends React.Component<Props, State> {
       })
     }
   }
-
-  assignEmailRef = (ele: HTMLInputElement) => this.loginInput = ele
 
   render () {
     return (
@@ -97,12 +116,19 @@ class Login extends React.Component<Props, State> {
             />
           </div>
 
-          <input type='submit' className='button' />
+          <input type='submit' className='button primary' />
         </form>
         <div className={classNames({ popover: true, show: this.state.popOver })}>
-          <p>You wrote {this.state.email} but we think you ment {this.state.suggestedEmail}.</p>
+          <p>You wrote <b>{this.state.email}</b> but we think you ment <b>{this.state.suggestedEmail}</b>.</p>
           <p>If this is correct, press "Yes" else press "No"" and we will submit your entered email</p>
-          <button>Yes</button>{' '}<button>No</button>
+          <button
+            className='button primary'
+            onClick={this.changeDomain}
+          >Yes</button>
+          {' '}
+          <button
+            className='button'
+          >No</button>
         </div>
       </div >
     )
