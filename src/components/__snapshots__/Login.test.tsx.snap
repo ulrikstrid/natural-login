@@ -3,6 +3,7 @@ exports[`test renders without crashing 1`] = `
   className="login-container">
   <form
     className="form"
+    noValidate={true}
     onSubmit={[Function]}>
     <div
       className="form-group">
@@ -36,6 +37,7 @@ exports[`test renders without crashing 1`] = `
     </div>
     <input
       className="button primary"
+      formNoValidate={true}
       type="submit" />
   </form>
   <div

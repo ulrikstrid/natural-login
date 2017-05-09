@@ -72,3 +72,8 @@ test('best match', () => {
   expect(Email.bestMatch(Email.standardEmailDomains, gmail)).toEqual({ word: gmail, bestMatch: 'gmail.com', diff: 0})
   expect(Email.bestMatch(Email.standardEmailDomains, gnail)).toEqual({ word: gnail, bestMatch: 'gmail.com', diff: 1})
 })
+
+test('findDomainInString', () => {
+  expect(Email.findDomainInString (Email.standardEmailDomains, 'ulrik@notfound.com')).toBeNull()
+  expect(Email.findDomainInString (Email.standardEmailDomains, 'ulrik@outlook.com')).toBe('outlook.com')
+})
