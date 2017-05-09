@@ -1,8 +1,33 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import Login from './Login'
+import * as renderer from 'react-test-renderer'
+import { default as Login, setEmail, setPassword, State, SetStateCallback } from './Login'
 
-it('renders without crashing', () => {
-  const div = document.createElement('div')
-  ReactDOM.render(<Login />, div)
+const initalState: State = {
+  email: '',
+  password: '',
+  validEmail: true,
+  popOver: false,
+  suggestedEmail: ''
+}
+
+test('renders without crashing', () => {
+  const component = renderer.create(
+    <Login />
+  )
+
+  const initialTree = component.toJSON()
+  expect(initialTree).toMatchSnapshot()
+})
+
+test('setters should call setState', () => {
+  const email = 'ulrik@example.com'
+  const password = 'password'
+
+  setEmail((cb: SetStateCallback) => {
+    expect(cb(initalState)).toEqual({ email })
+  }, email)
+
+  setPassword((cb: SetStateCallback) => {
+    expect(cb(initalState)).toEqual({ password })
+  }, password)
 })

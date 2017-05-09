@@ -1,0 +1,69 @@
+exports[`test renders without crashing 1`] = `
+<div
+  className="login-container">
+  <form
+    className="form"
+    onSubmit={[Function]}>
+    <div
+      className="form-group">
+      <label
+        htmlFor="email">
+        Email
+      </label>
+      <input
+        autoComplete="off"
+        name="email"
+        onChange={[Function]}
+        type="email"
+        value="" />
+      <div
+        className="validation">
+        Not a valid E-mail
+      </div>
+    </div>
+    <div
+      className="form-group">
+      <label
+        htmlFor="password">
+        Password
+      </label>
+      <input
+        autoComplete="off"
+        name="password"
+        onChange={[Function]}
+        type="password"
+        value="" />
+    </div>
+    <input
+      className="button primary"
+      type="submit" />
+  </form>
+  <div
+    className="popover">
+    <p>
+      You wrote 
+      <b>
+        
+      </b>
+       but we think you ment 
+      <b>
+        
+      </b>
+      .
+    </p>
+    <p>
+      If this is correct, press \"Yes\" else press \"No\"\" and we will submit your entered email
+    </p>
+    <button
+      className="button primary"
+      onClick={[Function]}>
+      Yes
+    </button>
+     
+    <button
+      className="button">
+      No
+    </button>
+  </div>
+</div>
+`;

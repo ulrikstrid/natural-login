@@ -6,12 +6,28 @@ import './Login.css'
 
 interface Props {}
 
-interface State {
+export interface State {
   email: string,
   password: string,
   validEmail: boolean,
   popOver: boolean,
   suggestedEmail: string
+}
+
+export interface SetStateCallback {
+  (currentState: State): Partial<State>
+}
+
+interface SetState {
+  (stateSetter: SetStateCallback): void
+}
+
+export function setEmail (setState: SetState, email: string) {
+  setState((_) => ({ email }))
+}
+
+export function setPassword (setState: SetState, password: string) {
+  setState((_) => ({ password }))
 }
 
 class Login extends React.Component<Props, State> {
@@ -50,17 +66,15 @@ class Login extends React.Component<Props, State> {
   }
 
   setEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ email: e.currentTarget.value })
+    setEmail(this.setState.bind(this), e.currentTarget.value)
   }
 
   setPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ password: e.currentTarget.value })
+    setPassword(this.setState.bind(this), e.currentTarget.value)
   }
 
-  changeDomain = (e: React.SyntheticEvent<HTMLButtonElement>) => {
-    this.setState((currentState) => ({
-      email: currentState.suggestedEmail
-    }))
+  changeDomain = () => {
+    setEmail(this.setState.bind(this), this.state.suggestedEmail)
     // Submit form data for login here
   }
 
