@@ -54,6 +54,7 @@ class Login extends React.Component<Props, State> {
           suggestedEmail: `${username}@${bestDomainMatch.bestMatch}`,
           popOver: true
         })
+        e.preventDefault()
       }
 
       // The email is valid and the diff is too large to make sense of
@@ -70,10 +71,9 @@ class Login extends React.Component<Props, State> {
           suggestedEmail: `${username}@${foundDomain}`,
           popOver: true
         })
+        e.preventDefault()
       }
     }
-
-    e.preventDefault()
   }
 
   setEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +122,6 @@ class Login extends React.Component<Props, State> {
           <div className='form-group'>
             <label htmlFor='email'>Email</label>
             <input
-              ref={this.assignEmailRef}
               autoComplete='off'
               type='email'
               name='email'
