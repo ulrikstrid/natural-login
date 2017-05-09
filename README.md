@@ -23,4 +23,4 @@ To run the project locally just use the following command: `yarn run start`.
 
 To run the tests use `yarn run test`.
 
-You can also reach the project at [Github pages](https://ulrikstrid.github.io/natural-login).
+You can also reach the project at [Github pages](https://ulrikstrid.github.io/natural-login/).

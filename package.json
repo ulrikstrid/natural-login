@@ -2,7 +2,7 @@
   "name": "natural-login",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://ulrikstrid.github.io/natural-login",
+  "homepage": "https://ulrikstrid.github.io/natural-login/",
   "dependencies": {
     "@types/classnames": "^0.0.32",
     "@types/jest": "^19.2.2",
