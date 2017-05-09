@@ -39,10 +39,9 @@ class Login extends React.Component<Props, State> {
     suggestedEmail: ''
   }
 
-  loginInput: HTMLInputElement
-
   loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const emailMatch = this.loginInput.value.match(Email.emailRegex)
+    const userEmail = this.state.email
+    const emailMatch = userEmail.match(Email.emailRegex)
 
     if (emailMatch !== null) {
       // The email is valid, but could still be a typo
@@ -60,6 +59,18 @@ class Login extends React.Component<Props, State> {
       // The email is valid and the diff is too large to make sense of
       // just let it submit the form.
       return
+    } else if (!/@/.test(userEmail)) {
+      // there is not @ in the entered email, let's see if we can find a matching domainname
+      const foundDomain = Email.findDomainInString(Email.standardEmailDomains, userEmail)
+      if (foundDomain !== null) {
+        const username = userEmail.split(foundDomain)[0]
+        // Can we just assume this is correct? If yes, submit it
+        // But we can use our popover instead
+        this.setState({
+          suggestedEmail: `${username}@${foundDomain}`,
+          popOver: true
+        })
+      }
     }
 
     e.preventDefault()
@@ -75,10 +86,9 @@ class Login extends React.Component<Props, State> {
 
   changeDomain = () => {
     setEmail(this.setState.bind(this), this.state.suggestedEmail)
+    this.setState({ popOver: false })
     // Submit form data for login here
   }
-
-  assignEmailRef = (ele: HTMLInputElement) => this.loginInput = ele
 
   componentWillUpdate (_: Props, nextState: State) {
     // a empty email should not show a error message
@@ -104,7 +114,11 @@ class Login extends React.Component<Props, State> {
   render () {
     return (
       <div className='login-container'>
-        <form className={classNames({ form: true, hidden: this.state.popOver })} onSubmit={this.loginSubmit}>
+        <form
+          className={classNames({ form: true, hidden: this.state.popOver })}
+          onSubmit={this.loginSubmit}
+          noValidate={true}
+        >
           <div className='form-group'>
             <label htmlFor='email'>Email</label>
             <input
@@ -130,7 +144,7 @@ class Login extends React.Component<Props, State> {
             />
           </div>
 
-          <input type='submit' className='button primary' />
+          <input type='submit' className='button primary' formNoValidate={true} />
         </form>
         <div className={classNames({ popover: true, show: this.state.popOver })}>
           <p>You wrote <b>{this.state.email}</b> but we think you ment <b>{this.state.suggestedEmail}</b>.</p>
